@@ -11,28 +11,30 @@ import { CategoriaService } from '../services/domain/categoria.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
+import { ClienteService } from '../services/domain/cliente.service';
 
 @NgModule({
-  declarations: [
-    MyApp
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    IonicModule.forRoot(MyApp),
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CategoriaService,
-    ErrorInterceptorProvider,
-    AuthService,
-    StorageService
-  ]
+    declarations: [
+        MyApp
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        IonicModule.forRoot(MyApp),
+    ],
+    bootstrap: [IonicApp],
+    entryComponents: [
+        MyApp
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        CategoriaService,
+        ErrorInterceptorProvider,
+        AuthService,
+        StorageService,
+        ClienteService
+    ]
 })
-export class AppModule {}
+export class AppModule { }
