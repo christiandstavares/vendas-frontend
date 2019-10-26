@@ -19,8 +19,7 @@ export class ClienteService {
         let authHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + token });
 
         return this.httpClient.get<ClienteDTO>(
-            `${API_CONFIG.baseUrl}/clientes/por-email?email=${email}`,
-            { 'headers': authHeader }
+            `${API_CONFIG.baseUrl}/clientes/por-email?email=${email}`
         );
     }
 
