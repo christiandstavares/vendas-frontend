@@ -20,12 +20,19 @@ export class AuthService {
         });
     }
 
+    refreshToken() {
+        return this.http.post(`${API_CONFIG.baseUrl}/auth/refresh-token`, {}, {
+            observe: 'response',
+            responseType: 'text'
+        });
+    }
+
     successfulLogin(auth: string) {
         let token = auth.substring(7);
         let user: LocalUser = {
             token: token,
             email: this.jwtHelper.decodeToken(token).sub
-        }
+        };
         this.storageService.setLocalUser(user);
     }
 
