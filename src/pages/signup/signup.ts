@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EstadoService } from "../../services/domain/estado.service";
 import { EstadoDTO } from "../../models/estado.dto";
 import { CidadeDTO } from "../../models/cidade.dto";
+import { ClienteService } from "../../services/domain/cliente.service";
 
 @IonicPage()
 @Component({
@@ -20,7 +21,9 @@ export class SignupPage {
         public navCtrl: NavController,
         public navParams: NavParams,
         public formBuilder: FormBuilder,
-        public estadoService: EstadoService
+        public estadoService: EstadoService,
+        public clienteService: ClienteService,
+        public alertController: AlertController
     ) {
         this.formGroup = formBuilder.group({
             nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
@@ -31,13 +34,13 @@ export class SignupPage {
             logradouro: ['', [Validators.required]],
             numero: ['', [Validators.required]],
             complemento: ['', []],
-            bairro: ['', []],
+            bairro: ['', [Validators.required]],
             cep: ['', [Validators.required]],
             telefone1: ['', [Validators.required]],
-            telefone2: ['', []],
-            telefone3: ['', []],
-            estadoId: ['', [Validators.required]],
-            cidadeId: ['', [Validators.required]]
+            telefone2: [null, []],
+            telefone3: [null, []],
+            idEstado: ['', [Validators.required]],
+            idCidade: ['', [Validators.required]]
         });
     }
 
@@ -50,7 +53,7 @@ export class SignupPage {
     }
 
     updateCidades() {
-        let idEstado = this.formGroup.value.estadoId;
+        let idEstado = this.formGroup.value.idEstado;
 
         if (idEstado) {
             this.estadoService.buscarCidades(idEstado).subscribe(
@@ -62,10 +65,27 @@ export class SignupPage {
             this.cidades = [];
         }
 
-        this.formGroup.controls.cidadeId.setValue('');
+        this.formGroup.controls.idCidade.setValue('');
     }
 
     signupUser() {
-        console.log("é nois");
+        this.clienteService.insert(this.formGroup.value).subscribe(
+            () => {
+                let alert = this.alertController.create({
+                    title: 'Sucesso!',
+                    message: 'Cadastro efetuado com sucesso',
+                    enableBackdropDismiss: false,
+                    buttons: [
+                        {
+                            text: 'OK',
+                            handler: () => {
+                                this.navCtrl.pop();
+                            }
+                        }
+                    ]
+                });
+                alert.present();
+            }
+        );
     }
 }
